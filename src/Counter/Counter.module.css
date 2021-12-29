@@ -1,0 +1,32 @@
+.wrapper {
+    border: 1px solid lightblue;
+    width: 400px;
+    padding: 30px;
+}
+.counter {
+    background: lightblue;
+    border-radius: 10px;
+    padding: 40px;
+}
+.counterVal {
+    font-size: 100px;
+}
+.activeVal {
+    color: red;
+}
+.btnList {
+    border: 1px solid  lightblue;
+    border-radius: 10px;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding: 25px;
+}
+.btn {
+    width: 150px;
+    padding: 5px;
+    background: lightblue;
+    border: 1px solid #282c34;
+    border-radius: 10px;
+}

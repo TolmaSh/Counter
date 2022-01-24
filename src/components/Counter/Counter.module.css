@@ -1,6 +1,6 @@
 .wrapper {
     border: 1px solid lightblue;
-    width: 400px;
+    width: clamp(250px,40%,400px);
     padding: 30px;
 }
 .counter {
@@ -9,13 +9,12 @@
     height: 200px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     gap: 30px;
-    padding: 40px;
+    padding: 40px 20px;
 }
 .counterVal {
-    font-size: 100px;
+    font-size: 80px;
 }
 .editableMode {
     font-size: 50px;
@@ -24,7 +23,7 @@
     color: red;
 }
 .error {
-    border: 3px solid red;
+    outline: 3px solid red  !important;
 }
 .btnList {
     border: 1px solid  lightblue;
@@ -41,4 +40,29 @@
     background: lightblue;
     border: 1px solid #282c34;
     border-radius: 10px;
+    font-weight: bold;
+}
+.input_name {
+    display: flex;
+    justify-content: space-between;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+.input_name > input {
+    width: clamp(34px,40%,120px);
+    height: 40px;
+    border: none;
+    outline: 3px solid #7bd4f1;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+
+}
+@media screen and (max-width: 450px) {
+    .input_name {
+        align-items: center;
+        font-size: 20px;
+    }
 }

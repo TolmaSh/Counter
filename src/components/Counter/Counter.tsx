@@ -12,7 +12,8 @@ export const Counter = () => {
     const [endVal, setEndVal] = useState<number>(5)
     const [count, setCount] = useState<number>(startVal)
     const [editableMode, setEditableMode] = useState<boolean>(false)
-
+    const [errorMode, setErrorMode] = useState<boolean>(false)
+    
     const addCountHandler = () => {
         if (count <= endVal) {
             setCount(count + 1)
@@ -25,8 +26,11 @@ export const Counter = () => {
     const disabledAdd = count >= endVal || editableMode
     const disabledReset = count <= startVal || editableMode
 
-     const onEditableMode = (val: boolean) => {
+     const toggleEditableMode = (val: boolean) => {
         setEditableMode(val)
+     }     
+     const toggleErrorMode = (val: boolean) => {
+         setErrorMode(val)
      }
     const setNewValue = (sVal: number,eVal: number) => {
       setStartVal(sVal)
@@ -42,6 +46,7 @@ export const Counter = () => {
                     count={count}
                     endVal={endVal}
                     editableMode={editableMode}
+                    errorMode={errorMode}
                 />
                 <div className={s.btnList}>
                     <Button
@@ -60,7 +65,10 @@ export const Counter = () => {
             startVal={startVal}
             endVal={endVal}
             onClickCallback={setNewValue}
-            onEditableMode={onEditableMode}
+            toggleEditableMode={toggleEditableMode}
+            toggleErrorMode={toggleErrorMode}
+            errorMode={errorMode}
+
             />
         </>
     );

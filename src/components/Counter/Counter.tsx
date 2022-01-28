@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from "./Counter.module.css"
 import {Button} from "./Button/Button";
 import {CounterValue} from "./CounterValue/CounterValue";
 import {EditCounter} from "./EditCounter/EditCounter";
+import {restoreState, saveState} from "../../localStorage/localStorage";
 
 
 export const Counter = () => {
@@ -13,7 +14,16 @@ export const Counter = () => {
     const [count, setCount] = useState<number>(startVal)
     const [editableMode, setEditableMode] = useState<boolean>(false)
     const [errorMode, setErrorMode] = useState<boolean>(false)
-    
+
+    useEffect(() => {
+        setStartVal(restoreState('Start Value', 0));
+        setEndVal(restoreState('Max Value', 5))
+        setCount(restoreState('Counter Value', startVal))
+
+    }, [])
+    useEffect(() => {
+        saveState('Counter Value', count);
+    }, [count])
     const addCountHandler = () => {
         if (count <= endVal) {
             setCount(count + 1)
@@ -26,14 +36,14 @@ export const Counter = () => {
     const disabledAdd = count >= endVal || editableMode
     const disabledReset = count <= startVal || editableMode
 
-     const toggleEditableMode = (val: boolean) => {
+    const toggleEditableMode = (val: boolean) => {
         setEditableMode(val)
-     }     
-     const toggleErrorMode = (val: boolean) => {
-         setErrorMode(val)
-     }
-    const setNewValue = (sVal: number,eVal: number) => {
-      setStartVal(sVal)
+    }
+    const toggleErrorMode = (val: boolean) => {
+        setErrorMode(val)
+    }
+    const setNewValue = (sVal: number, eVal: number) => {
+        setStartVal(sVal)
         setEndVal(eVal)
         setCount(sVal)
         setEditableMode(false)
@@ -62,12 +72,12 @@ export const Counter = () => {
                 </div>
             </div>
             <EditCounter
-            startVal={startVal}
-            endVal={endVal}
-            onClickCallback={setNewValue}
-            toggleEditableMode={toggleEditableMode}
-            toggleErrorMode={toggleErrorMode}
-            errorMode={errorMode}
+                startVal={startVal}
+                endVal={endVal}
+                onClickCallback={setNewValue}
+                toggleEditableMode={toggleEditableMode}
+                toggleErrorMode={toggleErrorMode}
+                errorMode={errorMode}
 
             />
         </>

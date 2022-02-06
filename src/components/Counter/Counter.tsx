@@ -5,25 +5,25 @@ import {CounterValue} from "./CounterValue/CounterValue";
 import {EditCounter} from "./EditCounter/EditCounter";
 import {restoreState, saveState} from "../../localStorage/localStorage";
 
-
 export const Counter = () => {
-
-
-    const [startVal, setStartVal] = useState<number>(0)
-    const [endVal, setEndVal] = useState<number>(5)
-    const [count, setCount] = useState<number>(startVal)
-    const [editableMode, setEditableMode] = useState<boolean>(false)
-    const [errorMode, setErrorMode] = useState<boolean>(false)
+    const [startVal, setStartVal] = useState(0)
+    const [endVal, setEndVal] = useState(5)
+    const [count, setCount] = useState(startVal)
+    const [editableMode, setEditableMode] = useState(false)
+    const [errorMode, setErrorMode] = useState(false)
 
     useEffect(() => {
-        setStartVal(restoreState('Start Value', 0));
-        setEndVal(restoreState('Max Value', 5))
-        setCount(restoreState('Counter Value', startVal))
+        const defaultStartValue = restoreState('Start Value', 0);
 
+        setStartVal(defaultStartValue);
+        setEndVal(restoreState('Max Value', 5))
+        setCount(restoreState('Counter Value', defaultStartValue))
     }, [])
+
     useEffect(() => {
         saveState('Counter Value', count);
     }, [count])
+
     const addCountHandler = () => {
         if (count <= endVal) {
             setCount(count + 1)
@@ -48,6 +48,7 @@ export const Counter = () => {
         setCount(sVal)
         setEditableMode(false)
     }
+
 
     return (
         <>

@@ -1,70 +1,69 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import s from "../Counter.module.css";
 import {Button} from "../Button/Button";
-import {restoreState, saveState} from "../../../localStorage/localStorage";
+import {saveState} from "../../../localStorage/localStorage";
+import {useDispatch, useSelector} from "react-redux";
+import {RootReducerType} from "../../../store/store";
+import {
+    changeCounterValueAC,
+    setMaxValueAC,
+    setStartValueAC,
+    toggleEditableModeAC,
+    toggleErrorModeAC
+} from "../../../store/CounterReducer";
 
-type EditCounterPropsType = {
-    startVal: number
-    endVal: number
-    onClickCallback: (sVal: number, eVal: number) => void
-    toggleEditableMode: (val: boolean) => void
-    toggleErrorMode: (val: boolean) => void
-    errorMode: boolean
-}
 
-export const EditCounter = ({
-                                errorMode,
-                                toggleErrorMode,
-                                toggleEditableMode,
-                                onClickCallback,
-                                startVal,
-                                endVal
-                            }: EditCounterPropsType) => {
-    const [maxValue, setMaxValue] = useState(5)
-    const [startValue, setStartValue] = useState(0)
+export const EditCounter = () => {
+
+    const dispatch = useDispatch()
+    const startVal: number = useSelector<RootReducerType, number>(state => state.counter.startValue)
+    const endVal: number = useSelector<RootReducerType, number>(state => state.counter.maxValue)
+    const errorMode: boolean = useSelector<RootReducerType, boolean>( state => state.counter.error)
+
+
+    const [maxValue, setMaxValue] = useState(endVal)
+    const [startValue, setStartValue] = useState(startVal)
+
     useEffect(() => {
         editableModeCallback();
-    })
-    useEffect(() => {
-        setStartValue(restoreState('Start Value', 0));
-        setMaxValue(restoreState('Max Value', 5))
-    }, [])
+    }, [maxValue, startValue])
+
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const newMaxValue = +e.currentTarget.value
-
         if (startValue === newMaxValue || newMaxValue < 0 || newMaxValue < startValue) {
-            toggleErrorMode(true)
+            dispatch(toggleErrorModeAC(true))
         } else {
-            toggleErrorMode(false)
+            dispatch(toggleErrorModeAC(false))
         }
-
         setMaxValue(newMaxValue)
     }
+
     const onChangeStartValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const newStartValue = +e.currentTarget.value
-
         if (newStartValue === maxValue || newStartValue < 0 || newStartValue > maxValue) {
-            toggleErrorMode(true)
+            dispatch(toggleErrorModeAC(true))
         } else {
-            toggleErrorMode(false)
+            dispatch(toggleErrorModeAC(false))
         }
         setStartValue(newStartValue)
-
     }
 
     const onClickHandler = () => {
-        onClickCallback(startValue, maxValue)
+        dispatch(setStartValueAC(startValue))
+        dispatch(setMaxValueAC(maxValue))
+        dispatch(changeCounterValueAC(startValue))
+        dispatch(toggleEditableModeAC(false))
         saveState('Start Value', startValue);
         saveState('Max Value', maxValue)
     }
 
     const editableModeCallback = () => {
         if (startValue === startVal && maxValue === endVal) {
-            toggleEditableMode(false)
+            dispatch(toggleEditableModeAC(false))
         } else if (errorMode) {
-            toggleEditableMode(false)
+            dispatch(toggleEditableModeAC(false))
         } else {
-            toggleEditableMode(true)
+            dispatch(toggleEditableModeAC(true))
         }
     }
 

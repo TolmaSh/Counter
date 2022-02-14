@@ -1,64 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import s from "./Counter.module.css"
 import {Button} from "./Button/Button";
 import {CounterValue} from "./CounterValue/CounterValue";
-import {EditCounter} from "./EditCounter/EditCounter";
-import {restoreState, saveState} from "../../localStorage/localStorage";
+import {useDispatch, useSelector} from "react-redux";
+import {RootReducerType} from "../../store/store";
+import {addCounterValueAC, resetCounterAC} from "../../store/CounterReducer";
 
 export const Counter = () => {
-    const [startVal, setStartVal] = useState(0)
-    const [endVal, setEndVal] = useState(5)
-    const [count, setCount] = useState(startVal)
-    const [editableMode, setEditableMode] = useState(false)
-    const [errorMode, setErrorMode] = useState(false)
 
-    useEffect(() => {
-        const defaultStartValue = restoreState('Start Value', 0);
-
-        setStartVal(defaultStartValue);
-        setEndVal(restoreState('Max Value', 5))
-        setCount(restoreState('Counter Value', defaultStartValue))
-    }, [])
-
-    useEffect(() => {
-        saveState('Counter Value', count);
-    }, [count])
+    const dispatch = useDispatch()
+    const value: number = useSelector<RootReducerType, number>( state => state.counter.value)
+    const startValue: number = useSelector<RootReducerType, number>( state => state.counter.startValue)
+    const maxValue: number = useSelector<RootReducerType, number>( state => state.counter.maxValue)
+    const editableMode: boolean = useSelector<RootReducerType, boolean>(state => state.counter.editable)
 
     const addCountHandler = () => {
-        if (count <= endVal) {
-            setCount(count + 1)
+        if (value <= maxValue) {
+            dispatch(addCounterValueAC())
         }
     }
     const resetCounterHandler = () => {
-        setCount(startVal)
+        dispatch(resetCounterAC(startValue))
     }
 
-    const disabledAdd = count >= endVal || editableMode
-    const disabledReset = count <= startVal || editableMode
-
-    const toggleEditableMode = (val: boolean) => {
-        setEditableMode(val)
-    }
-    const toggleErrorMode = (val: boolean) => {
-        setErrorMode(val)
-    }
-    const setNewValue = (sVal: number, eVal: number) => {
-        setStartVal(sVal)
-        setEndVal(eVal)
-        setCount(sVal)
-        setEditableMode(false)
-    }
-
+    const disabledAdd = value >= maxValue || editableMode
+    const disabledReset = value <= startValue || editableMode
 
     return (
-        <>
             <div className={s.wrapper}>
-                <CounterValue
-                    count={count}
-                    endVal={endVal}
-                    editableMode={editableMode}
-                    errorMode={errorMode}
-                />
+                <CounterValue/>
                 <div className={s.btnList}>
                     <Button
                         onClick={addCountHandler}
@@ -72,15 +42,5 @@ export const Counter = () => {
                     />
                 </div>
             </div>
-            <EditCounter
-                startVal={startVal}
-                endVal={endVal}
-                onClickCallback={setNewValue}
-                toggleEditableMode={toggleEditableMode}
-                toggleErrorMode={toggleErrorMode}
-                errorMode={errorMode}
-
-            />
-        </>
     );
 };

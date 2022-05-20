@@ -28,6 +28,7 @@ export const EditCounter = () => {
         editableModeCallback();
     }, [maxValue, startValue])
 
+
     const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const newMaxValue = +e.currentTarget.value
         if (startValue === newMaxValue || newMaxValue < 0 || newMaxValue < startValue) {

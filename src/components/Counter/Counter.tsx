@@ -13,6 +13,7 @@ export const Counter = () => {
     const startValue: number = useSelector<RootReducerType, number>( state => state.counter.startValue)
     const maxValue: number = useSelector<RootReducerType, number>( state => state.counter.maxValue)
     const editableMode: boolean = useSelector<RootReducerType, boolean>(state => state.counter.editable)
+    const errorMode: boolean = useSelector<RootReducerType, boolean>(state => state.counter.error)
 
     const addCountHandler = () => {
         if (value <= maxValue) {
@@ -28,7 +29,7 @@ export const Counter = () => {
 
     return (
             <div className={s.wrapper}>
-                <CounterValue/>
+                <CounterValue maxValue={maxValue} value={value} errorMode={errorMode} editableMode={editableMode}  />
                 <div className={s.btnList}>
                     <Button
                         onClick={addCountHandler}

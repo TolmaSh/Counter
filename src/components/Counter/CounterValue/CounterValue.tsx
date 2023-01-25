@@ -1,30 +1,23 @@
-import React from 'react';
-import s from "../Counter.module.css";
-import {useSelector} from "react-redux";
-import {RootReducerType} from "../../../store/store";
+import React, {FC} from 'react';
+import s from '../Counter.module.css';
 
 
+type PropsType = {
+    maxValue: number
+    value: number
+    errorMode: boolean
+    editableMode: boolean
+}
 
+export const CounterValue: FC<PropsType> = (props) => {
+    const {value, maxValue, errorMode, editableMode} = props
 
-export const CounterValue = () => {
-    const CounterValue: number = useSelector<RootReducerType, number>( state => state.counter.value)
-    const ErrorMode: boolean = useSelector<RootReducerType, boolean>(state => state.counter.error)
-    const EditableMode: boolean = useSelector<RootReducerType, boolean>(state => state.counter.editable)
-    const MaxValue: number = useSelector<RootReducerType, number>( state => state.counter.maxValue)
-
-    const EndCounterClass = CounterValue >= MaxValue ? `${s.counterVal} ${s.activeVal}` : `${s.counterVal}`
+    const EndCounterClass = value >= maxValue ? `${s.counterVal} ${s.activeVal}` : `${s.counterVal}`;
 
     return (
         <div className={s.counter}>
-            {
-                EditableMode
-                    ? <span className={s.editableMode}>enter values and press 'set'</span>
-                    : <span className={EndCounterClass}>
-                        {ErrorMode
-                            ? `VSE PROPALO`
-                            : `${CounterValue}`
-                        }
-                    </span>
+            { editableMode ? <span className={s.editableMode}>enter values and press 'set'</span>
+                           : <span className={EndCounterClass}> {errorMode ? `VSE PROPALO` : `${value}`} </span>
             }
         </div>
     );

@@ -16,8 +16,8 @@ export const CounterValue: FC<PropsType> = (props) => {
 
     return (
         <div className={s.counter}>
-            { editableMode ? <span className={s.editableMode}>enter values and press 'set'</span>
-                           : <span className={EndCounterClass}> {errorMode ? `VSE PROPALO` : `${value}`} </span>
+            {editableMode ? <span className={s.editableMode}>enter values and press 'set'</span>
+                : <span className={EndCounterClass}> {errorMode ? `VSE PROPALO` : `${value}`} </span>
             }
         </div>
     );

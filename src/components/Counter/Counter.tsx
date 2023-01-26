@@ -5,7 +5,6 @@ import {CounterValue} from './CounterValue/CounterValue';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootReducerType} from '../../store/store';
 import {
-    addCounterValueAC,
     changeCounterValueAC,
     resetCounterAC,
     setMaxValueAC,
@@ -26,7 +25,7 @@ export const Counter = () => {
 
     const addCountHandler = () => {
         if (value <= maxValue) {
-            dispatch(addCounterValueAC())
+            dispatch(changeCounterValueAC(value + 1))
         }
     }
     const resetCounterHandler = () => {
